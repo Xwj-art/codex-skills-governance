@@ -24,6 +24,10 @@ def describe_dst(dst: Path) -> str:
     return "missing"
 
 
+def path_present(path: Path) -> bool:
+    return path.exists() or path.is_symlink()
+
+
 def backup_existing(dst: Path, backup_root: Path) -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     backup_root.mkdir(parents=True, exist_ok=True)
@@ -57,7 +61,7 @@ def main() -> int:
         if selected and src.name not in selected:
             continue
         dst = target / src.name
-        if dst.exists() and not args.replace:
+        if path_present(dst) and not args.replace:
             skipped.append((src.name, describe_dst(dst)))
             continue
         installed.append(src.name)
@@ -65,7 +69,7 @@ def main() -> int:
         existing = describe_dst(dst)
         print(f"{action}: {src.relative_to(ROOT)} -> {dst} (existing: {existing})")
         if args.apply:
-            if dst.exists():
+            if path_present(dst):
                 if dst.is_symlink():
                     dst.unlink()
                 elif args.replace:

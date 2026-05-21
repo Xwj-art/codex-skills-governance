@@ -12,6 +12,15 @@ discovery model, this repository uses symlinks:
 The Git repository remains the source of truth. `~/.codex/skills` becomes the
 runtime view Codex reads.
 
+Recommended source location:
+
+```text
+~/.codex/user-skill-repos/codex-skills-governance
+```
+
+This keeps the managed source outside the runtime `~/.codex/skills` directory
+while still grouping it with Codex user assets.
+
 ## Separation Rule
 
 - User-owned / user-maintained skills: source lives in this repository and is

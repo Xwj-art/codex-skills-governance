@@ -33,6 +33,12 @@ Prepare a single GitHub-managed source for Codex-ready skills:
 Local install directories should eventually be generated from this repository
 by sync or symlink scripts.
 
+Recommended local source path:
+
+```text
+~/.codex/user-skill-repos/codex-skills-governance
+```
+
 ## Repository Layout
 
 ```text
