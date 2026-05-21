@@ -59,17 +59,23 @@ The output is JSON so it can later feed a dashboard, report, or GitHub action.
 
 ## Local Install
 
-Preview installing all migrated skills into `~/.codex/skills`:
+Preview installing all managed skills into `~/.codex/skills`:
 
 ```bash
 python3 codex-skills-governance/scripts/install_skills.py
 ```
 
-Apply the install only when ready:
+Recommended local setup: install managed skills as symlinks so the Git
+repository remains the source of truth and Codex still sees normal top-level
+skill names:
 
 ```bash
-python3 codex-skills-governance/scripts/install_skills.py --apply --replace
+python3 codex-skills-governance/scripts/install_skills.py --link --apply --replace
 ```
 
-The install script copies from this repository to the target directory. It does
-not push to GitHub and does not delete old repositories.
+When replacing existing local directories, the script moves them into
+`~/.codex/skills/.xwj-managed-backups/` before creating symlinks. It also writes
+`~/.codex/skills/.xwj-managed-skills.json` so user-managed entries can be
+distinguished from system, bundled, marketplace, and third-party skills.
+
+The install script does not push to GitHub and does not delete old repositories.

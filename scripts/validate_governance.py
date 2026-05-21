@@ -7,6 +7,7 @@ required_files = [
     ROOT / "README.md",
     ROOT / "docs" / "migration-scope.md",
     ROOT / "docs" / "ownership-scope.md",
+    ROOT / "docs" / "local-codex-management.md",
     ROOT / "docs" / "metrics" / "skill-usage-metrics.md",
     ROOT / "registry" / "skills.yaml",
     ROOT / "registry" / "conflict-boundaries.yaml",
