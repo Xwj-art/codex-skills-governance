@@ -1,0 +1,46 @@
+version: 1
+owner: Xwj-art
+status: source_scope_narrowed_to_user_owned_candidates
+
+policy:
+  do_not_delete_legacy_repos_until:
+    - the unified repository is pushed successfully
+    - migrated skills install cleanly from the unified repository
+    - the user confirms the old repository is no longer needed
+  public_push_rule:
+    - commit source only for user-owned or user-maintained skills
+    - track external skills by registry metadata only
+    - third-party, bundled, or unclear-license skill source must stay out of the public repository
+
+source_included_ready_candidates:
+  - karpathy-codex
+  - execution-planning-contract
+  - codex-token-budget
+  - cost-aware-parallel-engineering
+  - parallel-task
+  - swarm-planner
+  - thesis-template-docx-fixer
+  - thesis-excellence-review
+  - skill-usage-observer
+  - qwen-asr
+  - qwen-image
+  - habit-tracker
+
+source_included_needs_codex_adaptation: []
+
+external_dependencies_metadata_only:
+  - academic-pptx
+  - marp-slides
+  - cli-creator
+  - figma-use
+  - figma-create-new-file
+  - figma-generate-design
+  - playwright-interactive
+  - screenshot
+  - coder
+
+ownership_confirmation_needed:
+  - growth
+
+legacy_repos_to_archive_after_successful_migration:
+  - github.com/Xwj-art/thesis-excellence-review

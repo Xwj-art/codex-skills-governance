@@ -1,0 +1,4 @@
+interface:
+  display_name: "Thesis Template Fixer"
+  short_description: "Minimal, template-first DOCX thesis formatting repairs."
+  default_prompt: "Use $thesis-template-docx-fixer to align this thesis .docx to its school template with minimal, Word-safe edits and render-verified page checks."

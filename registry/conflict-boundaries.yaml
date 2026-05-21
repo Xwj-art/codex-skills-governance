@@ -1,0 +1,90 @@
+version: 1
+
+groups:
+  - id: base-engineering
+    purpose: Default coding workflow and planning hierarchy.
+    primary:
+      - karpathy-codex
+    auxiliaries:
+      - execution-planning-contract
+      - codex-token-budget
+    rules:
+      - karpathy-codex owns the default coding style.
+      - execution-planning-contract is added for non-trivial work, not for one-command answers.
+      - codex-token-budget is used only when output/context risk is material.
+
+  - id: skill-governance
+    purpose: Separate skill observation and triage from domain execution and skill rewriting.
+    primary_by_case:
+      usage_metrics_or_effectiveness_review: skill-usage-observer
+      actual_skill_creation_or_rewrite: skill-creator
+      normal_domain_task: the domain skill selected by its trigger boundary
+    rules:
+      - skill-usage-observer measures frequency, evidence, corrections, overlap, staleness, and derived usefulness.
+      - skill-usage-observer does not perform the domain task owned by the measured skill.
+      - skill-usage-observer may recommend keep, trim, split, merge, codex_adapt, observe_more, or archive_candidate.
+      - Rewriting a skill requires a separate explicit edit step after inspecting the target SKILL.md.
+
+  - id: parallel-engineering
+    purpose: Avoid accidental subagent or swarm escalation.
+    primary_by_case:
+      architecture_parallel_cost_control: cost-aware-parallel-engineering
+      explicit_swarm_plan: swarm-planner
+      explicit_parallel_task_command: parallel-task
+      normal_multistep_work: execution-planning-contract
+    hard_boundary:
+      - In Codex, do not spawn subagents unless the user explicitly asks for subagents, delegation, or parallel agent work.
+      - Requests for depth, thoroughness, or detailed analysis do not imply permission to spawn.
+    excluded_until_confirmed:
+      - tree-pipeline
+
+  - id: thesis-docx
+    purpose: Separate thesis formatting, full thesis quality review, and automated checking.
+    primary_by_case:
+      template_format_repair: thesis-template-docx-fixer
+      full_thesis_excellence_review: thesis-excellence-review
+      automated_rule_checking: thesis-format-checker
+    tools:
+      - thesis-format-checker
+    rules:
+      - thesis-template-docx-fixer owns local Word-safe DOCX template repair.
+      - thesis-excellence-review owns whole-thesis content quality, cross-chapter logic, defense risk, experiment validity, figure/table fit, and final thesis QA.
+      - thesis-format-checker is a Python tool, not a skill; it can be called by a thesis skill.
+      - When a task is only local DOCX template repair, prefer thesis-template-docx-fixer over thesis-excellence-review.
+
+  - id: presentations
+    purpose: Separate academic argument design from deck implementation.
+    primary_by_case:
+      academic_narrative_or_research_argument: academic-pptx
+      marp_deck_creation_or_editing: marp-slides
+    rules:
+      - academic-pptx owns academic content structure and evidence.
+      - marp-slides owns MARP syntax, themes, SVG charts, and rendered deck implementation.
+
+  - id: figma
+    purpose: Enforce prerequisite ordering for Figma work.
+    primary_by_case:
+      figma_js_context_or_write_action: figma-use
+      new_figma_or_figjam_file: figma-create-new-file
+      page_or_screen_to_figma: figma-generate-design
+    rules:
+      - figma-use must be loaded before Figma write/read actions requiring JS execution.
+      - figma-generate-design is paired with figma-use for screen construction.
+
+  - id: browser-and-capture
+    purpose: Separate interactive browser debugging from OS screenshot capture.
+    primary_by_case:
+      persistent_browser_or_electron_debugging: playwright-interactive
+      explicit_system_screenshot: screenshot
+    rules:
+      - Use Browser Use plugin when the user explicitly asks for in-app browser interaction.
+      - Use screenshot only for explicit OS-level capture or fallback when tool-specific capture is unavailable.
+
+  - id: media
+    purpose: Separate generation providers and media types.
+    primary_by_case:
+      qwen_image_generation: qwen-image
+      qwen_audio_transcription: qwen-asr
+    rules:
+      - qwen-image is for raster image generation, especially Chinese prompts.
+      - qwen-asr is for audio transcription only.

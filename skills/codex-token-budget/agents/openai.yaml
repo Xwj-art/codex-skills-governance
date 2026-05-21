@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Token Budget"
+  short_description: "Audit and control local Codex token growth."
+  default_prompt: "Use codex-token-budget to plan this task with strict context and tool-output limits."

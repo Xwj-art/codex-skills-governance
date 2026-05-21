@@ -1,0 +1,238 @@
+version: 1
+owner: Xwj-art
+policy:
+  include_only_codex_used: true
+  excluded_surfaces:
+    - ~/.claude/skills/*
+
+skills:
+  - id: karpathy-codex
+    source_surface: codex
+    status: active
+    category: operating-style
+    primary_when:
+      - coding, debugging, refactoring, configuration, and automation work needs a lean execution style
+    auxiliary_to:
+      - execution-planning-contract
+    codex_notes:
+      - Default local engineering style under /Users/xiaowenjie.
+
+  - id: execution-planning-contract
+    source_surface: codex
+    status: active
+    category: planning
+    primary_when:
+      - non-trivial multi-step work needs explicit order, dependencies, and verification
+    auxiliary_to:
+      - karpathy-codex
+      - thesis-template-docx-fixer
+      - cost-aware-parallel-engineering
+
+  - id: codex-token-budget
+    source_surface: codex
+    status: active
+    category: context-management
+    primary_when:
+      - a task may emit large output or grow context significantly
+    do_not_use_when:
+      - the task is a short answer or a small one-file change
+
+  - id: skill-usage-observer
+    source_surface: governance
+    status: draft
+    category: skill-governance
+    primary_when:
+      - measuring Codex skill usage, effectiveness, frequency, overlap, and staleness
+      - deciding whether a skill should be kept, trimmed, split, merged, adapted for Codex, observed more, or archived
+    do_not_use_when:
+      - the task asks to directly perform the domain work owned by another skill
+      - there is no local usage evidence and the user is only asking for general skill design advice
+    codex_notes:
+      - This is an observer and triage skill. It recommends changes but does not rewrite other skills without a separate edit request.
+      - Use lightweight sources first: history.jsonl, session_index.jsonl, codex-tui.log, and governance registry files.
+
+  - id: cost-aware-parallel-engineering
+    source_surface: codex
+    status: active
+    category: parallel-engineering
+    primary_when:
+      - planning architecture-first parallel engineering with cost control
+    do_not_use_when:
+      - the task is a narrow local edit
+      - the user did not ask for subagents or parallel work
+    codex_notes:
+      - In Codex, subagents require explicit user authorization.
+
+  - id: swarm-planner
+    source_surface: codex
+    status: active_explicit_only
+    category: parallel-engineering
+    primary_when:
+      - the user explicitly invokes swarm planning
+    do_not_use_when:
+      - the user asks for normal planning without explicit swarm execution
+
+  - id: parallel-task
+    source_surface: codex
+    status: active_explicit_only
+    category: parallel-engineering
+    primary_when:
+      - the user explicitly invokes /parallel-task
+    do_not_use_when:
+      - the user merely asks for thoroughness or detailed analysis
+
+  - id: thesis-template-docx-fixer
+    source_surface: codex
+    status: active
+    category: thesis-docx
+    primary_when:
+      - repairing an existing thesis DOCX to match a school template
+      - local Word-safe formatting fixes are needed
+    do_not_use_when:
+      - the task is full academic content improvement rather than template repair
+      - the task only needs an automated format report from a tool
+    tools:
+      - thesis-format-checker
+
+  - id: thesis-excellence-review
+    source_surface: github_migrated
+    status: active
+    category: thesis-review
+    primary_when:
+      - improving or auditing a Chinese undergraduate thesis DOCX to an excellent submission standard
+      - checking thesis content, cross-chapter logic, figures, tables, defense risks, experiments, citations, and DOCX validation together
+    do_not_use_when:
+      - the task is only narrow template formatting repair
+      - the task only needs an automated format report from a tool
+    auxiliary_to:
+      - thesis-template-docx-fixer
+    tools:
+      - thesis-format-checker
+    codex_notes:
+      - Migrated from github.com/Xwj-art/thesis-excellence-review.
+      - Claude-era mandatory multi-agent wording has been adapted to Codex role-review rules.
+
+  - id: academic-pptx
+    source_surface: agents
+    status: active
+    category: presentations
+    primary_when:
+      - academic presentation content and reasoning structure need improvement
+    auxiliary_to:
+      - marp-slides
+    do_not_use_when:
+      - the task is only technical deck rendering or file export
+
+  - id: marp-slides
+    source_surface: agents
+    status: active
+    category: presentations
+    primary_when:
+      - creating or editing MARP slide decks
+    do_not_use_when:
+      - the task is PPTX-specific or academic argument review only
+
+  - id: qwen-image
+    source_surface: agents
+    status: active
+    category: media
+    primary_when:
+      - Chinese-prompt image generation via Qwen Image is requested
+    do_not_use_when:
+      - the task is code-native SVG/CSS/canvas or existing icon editing
+
+  - id: qwen-asr
+    source_surface: agents
+    status: active
+    category: media
+    primary_when:
+      - audio transcription using Qwen ASR is requested
+
+  - id: growth
+    source_surface: agents
+    status: codex_trimmed_needs_ownership_confirmation
+    category: marketing
+    primary_when:
+      - SEO, SMO, CRO, or GEO optimization is needed
+    codex_notes:
+      - SKILL.md has been trimmed to Codex-relevant workflow; long details remain in references/.
+      - Confirm this is user-owned/user-maintained before public push.
+
+  - id: learn
+    source_surface: agents
+    status: active
+    category: project-learning
+    primary_when:
+      - the user asks to learn project conventions or generate rule files
+    codex_notes:
+      - Adapted for Codex-local AGENTS.md/.codex/rules guidance; .claude/rules only when explicitly requested.
+
+  - id: habit-tracker
+    source_surface: agents
+    status: active
+    category: product-feature
+    primary_when:
+      - building habit tracking features with streaks, reminders, or progress visualization
+
+  - id: cli-creator
+    source_surface: codex
+    status: active
+    category: tool-building
+    primary_when:
+      - creating a composable CLI from docs, APIs, SDKs, or local scripts
+
+  - id: coder
+    source_surface: agents
+    status: needs_context_check
+    category: integration
+    primary_when:
+      - the user wants to interact with Coder data or workflows
+    codex_notes:
+      - Confirm required credentials and local connector availability before broadening usage.
+
+  - id: figma-use
+    source_surface: codex
+    status: active
+    category: figma
+    primary_when:
+      - before any Figma write/read action that requires JavaScript execution
+
+  - id: figma-create-new-file
+    source_surface: codex
+    status: active
+    category: figma
+    primary_when:
+      - creating a new Figma or FigJam file
+
+  - id: figma-generate-design
+    source_surface: codex
+    status: active
+    category: figma
+    primary_when:
+      - translating an app page, screen, or view into Figma
+    auxiliary_to:
+      - figma-use
+
+  - id: playwright-interactive
+    source_surface: codex
+    status: active
+    category: browser-testing
+    primary_when:
+      - persistent browser or Electron interaction/debugging is needed
+
+  - id: screenshot
+    source_surface: codex
+    status: active
+    category: browser-testing
+    primary_when:
+      - explicit desktop or system screenshot capture is requested
+
+tools:
+  - id: thesis-format-checker
+    kind: python-tool
+    status: external_tool
+    source: github.com/Xwj-art/thesis-format-checker
+    used_by:
+      - thesis-template-docx-fixer
+    notes:
+      - Not a skill. Do not add to skill trigger registry.

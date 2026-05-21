@@ -1,0 +1,4 @@
+interface:
+  display_name: "Karpathy Codex"
+  short_description: "Lean coding discipline: think first, stay simple, change surgically, verify the goal."
+  default_prompt: "Use $karpathy-codex for this coding task: think before coding, choose the simplest workable fix, keep changes surgical, and verify against an explicit goal."
